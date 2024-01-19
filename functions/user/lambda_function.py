@@ -25,5 +25,3 @@ def lambda_handler(event, context):
         'statusCode': 404,
         'body': json.dumps('User not found')
     }
-
-#uid = "WIknTUSSunQtmQbFPsgaLhKY98B3"
