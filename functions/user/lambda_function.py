@@ -20,7 +20,7 @@ def lambda_handler(event, context):
                     if template['default_template'] == True:
                         return generate_response(200, template)
             else:
-                return generate_response(404, 'user does not have an templates')
+                return generate_response(404, 'user does not have any templates')
         return generate_response(404, 'User not found')
     except:
         return generate_response(500, 'Internal Server Error')
