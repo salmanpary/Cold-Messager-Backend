@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
-import json
+from core import generate_response
 
 cred = credentials.Certificate('./credentials.json')
 app = firebase_admin.initialize_app(cred)
@@ -18,16 +18,9 @@ def lambda_handler(event, context):
             if user_templates:
                 for template in user_templates:
                     if template['default_template'] == True:
-                        return {
-                            'statusCode': 200,
-                            'body': json.dumps(template)
-                        }
-        return {
-            'statusCode': 404,
-            'body': json.dumps('User not found')
-        }
+                        return generate_response(200, template)
+            else:
+                return generate_response(404, 'user does not have an templates')
+        return generate_response(404, 'User not found')
     except:
-        return {
-            'statusCode': 500,
-            'body': json.dumps('Internal Server Error')
-        }
+        return generate_response(500, 'Internal Server Error')
