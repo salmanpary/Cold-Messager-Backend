@@ -4,6 +4,7 @@ from firebase_admin import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
 from core import generate_response, load_env
 from core.ColdMessage import ColdMessage
+import json
 
 cred = credentials.Certificate(load_env())
 app = firebase_admin.initialize_app(cred)
@@ -11,11 +12,12 @@ db = firestore.client()
 
 def lambda_handler(event, context):
     try:
-        uid = event['uid']
-        extracted_data = event['extractedData']
-        user_record = db.collection('users-test').where(filter=FieldFilter('uid','==',uid)).get()
+        body = json.loads(event['body'])
+        uid = body['uid']
+        extracted_data = body['extractedData']
+        user_record = db.collection('users-test').where(filter=FieldFilter('uid','==',uid)).stream()
         if user_record:
-            user_record_dict = user_record[0].to_dict()
+            user_record_dict = list(user_record)[0].to_dict()
             user_templates = user_record_dict['templates']
             if user_templates:
                 for template in user_templates:
