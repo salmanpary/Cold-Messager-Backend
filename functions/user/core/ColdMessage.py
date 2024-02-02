@@ -32,7 +32,7 @@ class ColdMessage():
                 self.variables[skills_fields[i]] = self.extracted_data['top_skills'][i]
 
         if 'volunteering_experience' in data_keys and len(self.extracted_data['volunteering_experience']) != 0:
-            pass
+            self.variables['latest_volunteering_experience'] = self.extracted_data['volunteering_experience'][0]['role']
 
     def generate_message(self):
         for variable in self.variables.keys():

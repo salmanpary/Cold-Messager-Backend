@@ -13,9 +13,10 @@ db = firestore.client()
 def lambda_handler(event, context):
     try:
         body = json.loads(event['body'])
-        uid = body['uid']
+        #uid = body['uid']
+        email = body['email']
         extracted_data = body['extractedData']
-        user_record = db.collection('users-test').where(filter=FieldFilter('uid','==',uid)).stream()
+        user_record = db.collection('users-test').where(filter=FieldFilter('email','==',email)).stream()
         if user_record:
             user_record_dict = list(user_record)[0].to_dict()
             user_templates = user_record_dict['templates']
