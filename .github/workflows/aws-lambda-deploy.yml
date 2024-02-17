@@ -1,0 +1,42 @@
+name: AWS Test
+    
+on:
+    push: 
+        branches: [ main ]
+
+jobs:
+    aws-lambda-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name : Checkout
+              uses: actions/checkout@master
+
+            - name: Configure AWS
+              run: |
+                aws configure set default.region ${{secrets.AWS_DEFAULT_REGION}}
+                aws configure set aws_access_key_id ${{secrets.AWS_ACCESS_KEY_ID}}
+                aws configure set aws_secret_access_key ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            
+            - name: Zip Functions
+              run: |
+                cd functions
+
+                cd inputDataToDynamo
+                zip -r inputDataToDynamo.zip *
+
+                cd ..
+
+                cd user
+                zip -r user.zip *
+
+            - name: Upload code to AWS lambda
+              run: |
+                cd functions
+
+                cd inputDataToDynamo
+                aws lambda update-function-code --function-name inputDataToDynamo --zip-file fileb://./inputDataToDynamo.zip --no-cli-pager
+                
+                cd ..
+
+                cd user
+                aws lambda update-function-code --function-name user --zip-file fileb://./user.zip --no-cli-pager
