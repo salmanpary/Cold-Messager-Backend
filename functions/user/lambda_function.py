@@ -10,6 +10,10 @@ cred = credentials.Certificate(load_env())
 app = firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+
+# Did it work?
+
+
 def lambda_handler(event, context):
     try:
         body = json.loads(event['body'])
