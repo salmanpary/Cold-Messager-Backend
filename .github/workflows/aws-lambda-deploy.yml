@@ -25,7 +25,12 @@ jobs:
                 zip -r inputDataToDynamo.zip *
 
                 cd ..
+                
+                cd inputDataToSQS
+                zip -r inputDataToSQS.zip *
 
+                cd ..
+                
                 cd user
                 zip -r user.zip *
 
@@ -35,6 +40,11 @@ jobs:
 
                 cd inputDataToDynamo
                 aws lambda update-function-code --function-name inputDataToDynamo --zip-file fileb://./inputDataToDynamo.zip --no-cli-pager
+                
+                cd ..
+
+                cd inputDataToSQS
+                aws lambda update-function-code --function-name inputDataToSQS --zip-file fileb://./inputDataToSQS.zip --no-cli-pager
                 
                 cd ..
 
