@@ -1,4 +1,4 @@
-name: AWS Test
+name: CD / AWS Lambda
     
 on:
     push: 
